@@ -1,0 +1,82 @@
+<aiml version="2.0" encoding="UTF-8">
+    <category>
+        <pattern>HI</pattern>
+        <template>
+            <random>
+                <li>Hi there!</li>
+                <li>Hello there!</li>
+                <li>Greetings!</li>
+                <li>Hi my friend!</li>
+                <li>What can I do for you, my friend?</li>
+		<li>What's up, my dude?</li>
+		<li>Hey, how's it hanging></li>
+            </random>
+        </template>
+    </category>
+    <category>
+        <pattern>HI *</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+    <category>
+        <pattern>* HI</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+    <category>
+        <pattern>* HI *</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+    <category>
+        <pattern>HELLO</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+    <category>
+        <pattern>HELLO *</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+    <category>
+        <pattern>* HELLO</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+    <category>
+        <pattern>* HELLO *</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+    <category>
+        <pattern>HEY</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+    <category>
+        <pattern>HEY *</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+    <category>
+        <pattern>* HEY</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+    <category>
+        <pattern>* HEY *</pattern>
+        <template>
+            <srai>HI</srai>
+        </template>
+    </category>
+</aiml>
