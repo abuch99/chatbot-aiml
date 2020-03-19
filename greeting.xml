@@ -1,5 +1,10 @@
 <aiml version="2.0" encoding="UTF-8">
     <category>
+        <pattern>*</pattern>
+        <template>I have no answer for that.</template>
+    </category>
+    
+    <category>
         <pattern>HI</pattern>
         <template>
             <random>
