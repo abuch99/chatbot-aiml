@@ -20,6 +20,24 @@ def insert(u,b):
 	conn.execute("INSERT INTO conversation (id,user,bot) VALUES (?,?,?) ",(id,u,b))
 	conn.commit()
 
+def getelec():
+    cur=conn.cursor()
+    cur.execute("SELECT elect from electives")
+    rows = cur.fetchall()
+    res = ', '.join([idx for tup in rows for idx in tup]) 
+    print(res)
+    return res
+
+def getprof(proflist):
+    cur=conn.cursor()
+    t=tuple(proflist)
+    query="SELECT subject from profs where name in {}".format(t)
+    cur.execute(query)
+
+    rows = cur.fetchall()
+    res = ', '.join([idx for tup in rows for idx in tup])
+    return res
+
 kernel=aiml.Kernel()
 kernel.learn("bot/start.aiml")
 kernel.respond("learn ai")
@@ -32,7 +50,22 @@ while True:
 	    webbrowser.open(url,2)
 	    insert(str(u),"")
 	    continue
+
     else :
+        electives=""
+        test = s.split()
+        if(test[0]=='obtain'):
+            electives=getelec()
+            test.remove('obtain')
+            resp=" ".join(test)
+
+        elif(test[0]=='fac'):
+            check=u.split()
+            electives=getprof(check)
+            test.remove('fac')
+            s=" ".join(test)
+
+        s+=electives
         s=s.split('newline')
         ch=False
         v=""
