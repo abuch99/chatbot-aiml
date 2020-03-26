@@ -32,6 +32,18 @@ def getelec(conn):
     print(res)
     return res
 
+def getprof(conn, proflist):
+    cur=conn.cursor()
+    t=tuple(proflist)
+    print(t)
+    query="SELECT subject from profs where name in {}".format(t)
+    cur.execute(query)
+
+    rows = cur.fetchall()
+    res = ', '.join([idx for tup in rows for idx in tup])
+    print(res)
+    return res
+
 kernel=aiml.Kernel()
 kernel.learn("bot/start.aiml")
 kernel.respond("learn ai")
@@ -43,7 +55,7 @@ def ask():
     id=get_id(conn)
     message = str(request.args['chatmessage'])
     resp=kernel.respond(message)
-
+    print(message)
     if str(message)[:6]=="google" or str(message)[:6]=="Google":
 	    url = "https://www.google.com.tr/search?q={}".format(str(message)[6:])
 	    webbrowser.open(url,2)
@@ -54,6 +66,12 @@ def ask():
     if(test[0]=='obtain'):
         electives=getelec(conn)
         test.remove('obtain')
+        resp=" ".join(test)
+
+    elif(test[0]=='fac'):
+        check=message.split()
+        electives=getprof(conn,check)
+        test.remove('fac')
         resp=" ".join(test)
 
     resp+=electives
