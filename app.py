@@ -26,21 +26,26 @@ def getelec():
     cur.execute("SELECT elect from electives")
     rows = cur.fetchall()
     res = ', '.join([idx for tup in rows for idx in tup]) 
-    print(res)
     return res
 
 def getprof(proflist):
     cur=conn.cursor()
-    t=tuple(proflist)
-    query="SELECT subject from profs where name in {}".format(t)
-    print(query)
-    cur.execute(query)
+    if(len(proflist)>1):
+        t=tuple(proflist)
+    else:
+        t=str(proflist[0])
 
+    if(len(proflist )==1):
+        query="SELECT subject from profs where name LIKE '{}'".format(t)
+    else:
+        query="SELECT subject from profs where name in {}".format(t)
+
+    cur.execute(query)
     rows = cur.fetchall()
     res = ', '.join([idx for tup in rows for idx in tup])
     return res
 
-def suggest(conn, electlist):
+def suggest(electlist):
     cur=conn.cursor()
     if(len(electlist)>1):
         t=tuple(electlist)
@@ -55,7 +60,6 @@ def suggest(conn, electlist):
         query="SELECT subject from suggest where name in {}".format(t)
 
     cur.execute(query)
-    print('worked')
 
     rows=cur.fetchall()
     res = ', '.join([idx for tup in rows for idx in tup])
@@ -77,7 +81,6 @@ while True:
     else :
         electives=""
         test = s.split()
-        print(test)
         if(len(test)==0):
             test.append('empty')
         if(test[0]=='obtain'):
@@ -95,7 +98,7 @@ while True:
 
         elif(test[0] == 'suggest'):
             electlist=test[1:]
-            electives=suggest(conn,electlist)
+            electives=suggest(electlist)
             test.remove('suggest')
             s=""
             s="The electives related to {} are : ".format(" ".join(test))

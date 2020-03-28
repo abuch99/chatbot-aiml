@@ -34,14 +34,19 @@ def getelec(conn):
 
 def getprof(conn, proflist):
     cur=conn.cursor()
-    t=tuple(proflist)
-    print(t)
-    query="SELECT subject from profs where name in {}".format(t)
-    cur.execute(query)
+    if(len(proflist)>1):
+        t=tuple(proflist)
+    else:
+        t=str(proflist[0])
 
+    if(len(proflist )==1):
+        query="SELECT subject from profs where name LIKE '{}'".format(t)
+    else:
+        query="SELECT subject from profs where name in {}".format(t)
+
+    cur.execute(query)
     rows = cur.fetchall()
     res = ', '.join([idx for tup in rows for idx in tup])
-    print(res)
     return res
 
 def suggest(conn, electlist):
