@@ -5,7 +5,8 @@ import sqlite3 as sq
 import webbrowser
 from flask import Flask, render_template, request, jsonify
 
-conn = sq.connect("conv.db")
+conn = sq.connect("conv.db")    
+
 sql='create table if not exists '+'conversation'+'(id INT,user TEXT,bot TEXT)'
 conn.execute(sql)
 conn.commit()
@@ -32,9 +33,31 @@ def getprof(proflist):
     cur=conn.cursor()
     t=tuple(proflist)
     query="SELECT subject from profs where name in {}".format(t)
+    print(query)
     cur.execute(query)
 
     rows = cur.fetchall()
+    res = ', '.join([idx for tup in rows for idx in tup])
+    return res
+
+def suggest(conn, electlist):
+    cur=conn.cursor()
+    if(len(electlist)>1):
+        t=tuple(electlist)
+    else:
+        t=str(electlist[0])
+
+    print(t)
+
+    if(len(electlist)==1):
+        query="SELECT subject from suggest where name LIKE '{}'".format(t)
+    else:
+        query="SELECT subject from suggest where name in {}".format(t)
+
+    cur.execute(query)
+    print('worked')
+
+    rows=cur.fetchall()
     res = ', '.join([idx for tup in rows for idx in tup])
     return res
 
@@ -54,16 +77,28 @@ while True:
     else :
         electives=""
         test = s.split()
+        print(test)
+        if(len(test)==0):
+            test.append('empty')
         if(test[0]=='obtain'):
             electives=getelec()
             test.remove('obtain')
-            resp=" ".join(test)
+            s=""
+            s="All the electives are :  "
 
         elif(test[0]=='fac'):
             check=u.split()
             electives=getprof(check)
             test.remove('fac')
-            s=" ".join(test)
+            s=""
+            s="The electives taken be {} are : ".format(" ".join(test))
+
+        elif(test[0] == 'suggest'):
+            electlist=test[1:]
+            electives=suggest(conn,electlist)
+            test.remove('suggest')
+            s=""
+            s="The electives related to {} are : ".format(" ".join(test))
 
         s+=electives
         s=s.split('newline')

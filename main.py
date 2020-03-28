@@ -44,6 +44,27 @@ def getprof(conn, proflist):
     print(res)
     return res
 
+def suggest(conn, electlist):
+    cur=conn.cursor()
+    if(len(electlist)>1):
+        t=tuple(electlist)
+    else:
+        t=str(electlist[0])
+
+    print(t)
+
+    if(len(electlist)==1):
+        query="SELECT subject from suggest where name LIKE '{}'".format(t)
+    else:
+        query="SELECT subject from suggest where name in {}".format(t)
+
+    cur.execute(query)
+    print('worked')
+
+    rows=cur.fetchall()
+    res = ', '.join([idx for tup in rows for idx in tup])
+    return res
+
 kernel=aiml.Kernel()
 kernel.learn("bot/start.aiml")
 kernel.respond("learn ai")
@@ -62,22 +83,35 @@ def ask():
 	    insert(str(message),"",conn,id)
     
     electives=""
+    v=""
     test = resp.split()
+    print(test[0])
+    if(len(test)==0):
+            test.append('empty')
+
     if(test[0]=='obtain'):
         electives=getelec(conn)
         test.remove('obtain')
-        resp=" ".join(test)
+        resp=""
+        resp="All electives are : "
 
     elif(test[0]=='fac'):
         check=message.split()
         electives=getprof(conn,check)
         test.remove('fac')
-        resp=" ".join(test)
+        resp=""
+        resp="The electives offered by {} are : ".format(" ".join(test))
+    
+    elif(test[0] == 'suggest'):
+        electlist=test[1:]
+        electives=suggest(conn,electlist)
+        test.remove('suggest')
+        resp=""
+        resp="The electives related to {} are : ".format(" ".join(test))
 
     resp+=electives
     resp=resp.split('newline')
     ch=False
-    v=""
     for item in resp:
         v=v+str(item)
         if 'Bye' in item:
