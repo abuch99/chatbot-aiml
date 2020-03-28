@@ -1,4 +1,4 @@
-# aiml-chatbot
+# chatbot-aiml
 Chatbot to give electives to students of BPHC
 
 ## Instructions:
