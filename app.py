@@ -87,7 +87,7 @@ while True:
             electives=getelec()
             test.remove('obtain')
             s=""
-            s="All the electives are :  "
+            s="Okay, some trending electives based on job prospects are :  "
 
         elif(test[0]=='fac'):
             check=u.split()

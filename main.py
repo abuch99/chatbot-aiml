@@ -98,7 +98,7 @@ def ask():
         electives=getelec(conn)
         test.remove('obtain')
         resp=""
-        resp="All electives are : "
+        resp="Okay, some trending electives based on job prospects are : "
 
     elif(test[0]=='fac'):
         check=message.split()
